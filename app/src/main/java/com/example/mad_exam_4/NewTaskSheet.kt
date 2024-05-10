@@ -1,6 +1,7 @@
 package com.example.mad_exam_4
 
 import android.os.Bundle
+import android.text.Editable
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -11,7 +12,7 @@ import com.example.mad_exam_4.databinding.FragmentNewTaskSheetBinding
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
-class NewTaskSheet : BottomSheetDialogFragment() {
+class NewTaskSheet(var taskItem: TaskItem?) : BottomSheetDialogFragment() {
 
     private lateinit var binding: FragmentNewTaskSheetBinding
     private lateinit var taskViewModel: TaskViewModel
@@ -19,6 +20,16 @@ class NewTaskSheet : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val activity = requireActivity()
+
+        if(taskItem != null){
+            binding.taskTitle.text = "Edit Task"
+            val editable = Editable.Factory.getInstance()
+            binding.name.text = editable.newEditable(taskItem!!.name)
+            binding.name.text = editable.newEditable(taskItem!!.desc)
+        }else{
+            binding.taskTitle.text = "New Task"
+        }
+
         taskViewModel = ViewModelProvider(activity).get(TaskViewModel::class.java)
 
         binding.saveButton.setOnClickListener{
@@ -27,8 +38,17 @@ class NewTaskSheet : BottomSheetDialogFragment() {
     }
 
     private fun saveAction() {
-        taskViewModel.name.value = binding.name.text.toString()
-        taskViewModel.desc.value = binding.desc.text.toString()
+        val name = binding.name.text.toString()
+        val desc = binding.desc.text.toString()
+
+        if(taskItem == null){
+            val newtask = TaskItem(name, desc, null,null)
+            taskViewModel.addTaskItem(newtask)
+        }else{
+            taskViewModel.updateTaskItem(taskItem!!.id, name,desc, null )
+        }
+
+
         binding.name.setText("")
         binding.desc.setText("")
         dismiss()
