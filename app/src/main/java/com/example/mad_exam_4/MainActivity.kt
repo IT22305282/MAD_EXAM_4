@@ -1,10 +1,12 @@
 package com.example.mad_exam_4
 
+import android.content.DialogInterface
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mad_exam_4.databinding.ActivityMainBinding
@@ -50,7 +52,28 @@ class MainActivity : AppCompatActivity(), TaskItemClickListener {
     }
 
     // Implementing incompleteTaskItem method to handle marking a task item as incomplete
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun incompleteTaskItem(taskItem: TaskItem) {
         taskViewModel.setIncomplete(taskItem)
+    }
+
+    override fun deleteTaskItem(taskItem: TaskItem) {
+        showDeleteConfirmationDialog(taskItem)
+    }
+
+    private fun showDeleteConfirmationDialog(taskItem: TaskItem) {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Delete Task")
+            .setMessage("Are you sure you want to delete?")
+            .setPositiveButton("Delete") { dialogInterface: DialogInterface, i: Int ->
+                // User confirmed deletion, call deleteTaskItem
+                taskViewModel.deleteTaskItem(taskItem)
+                dialogInterface.dismiss()
+            }
+            .setNegativeButton("Cancel") { dialogInterface: DialogInterface, i: Int ->
+                // User canceled deletion, dismiss dialog
+                dialogInterface.dismiss()
+            }
+            .show()
     }
 }

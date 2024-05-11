@@ -46,12 +46,14 @@
             android:fontFamily="sans-serif"/>
 
         <ImageButton
+            android:id="@+id/deleteButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginHorizontal="5dp"
             android:scaleX="1.5"
             android:scaleY="1.5"
+            android:contentDescription="@string/delete"
             android:src="@drawable/baseline_delete_outline"
             android:backgroundTint="@android:color/transparent"/>
 

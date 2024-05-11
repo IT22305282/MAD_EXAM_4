@@ -5,4 +5,6 @@ interface TaskItemClickListener {
     fun completeTaskItem(taskItem: TaskItem)
     fun incompleteTaskItem(taskItem: TaskItem)
 
+    fun deleteTaskItem(taskItem: TaskItem)
+
 }
