@@ -66,8 +66,8 @@ class TaskItemViewHolder(
     }
 
     private fun setIncompleteState() {
-        binding.name.paintFlags = 0 // Remove the strike-through effect
-        binding.dueTime.paintFlags = 0 // Remove the strike-through effect
+        binding.name.paintFlags = 0
+        binding.dueTime.paintFlags = 0
         // Change the image for complete button when task is incomplete
         binding.completeButton.setImageResource(R.drawable.check_box_outline)
     }

@@ -30,14 +30,6 @@ class TaskItem(
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun isCompleted() = completedDate() != null
-    @RequiresApi(Build.VERSION_CODES.O)
-    fun imageResource(): Int = if(isCompleted()) R.drawable.check_box_checked else R.drawable.check_box_outline
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    fun imageColor(context: Context): Int = if(isCompleted()) purple(context) else black(context)
-
-    private fun purple(context: Context) = ContextCompat.getColor(context, R.color.purple_500)
-    private fun black(context: Context) = ContextCompat.getColor(context, R.color.black)
 
     companion object{
         @RequiresApi(Build.VERSION_CODES.O)
