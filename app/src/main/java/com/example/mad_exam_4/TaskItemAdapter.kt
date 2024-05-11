@@ -1,7 +1,9 @@
 package com.example.mad_exam_4
 
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mad_exam_4.databinding.TaskItemCellBinding
 
@@ -18,6 +20,7 @@ class TaskItemAdapter(
 
     override fun getItemCount(): Int = taskItems.size
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: TaskItemViewHolder, position: Int) {
         holder.bindTaskItem(taskItems[position])
     }
