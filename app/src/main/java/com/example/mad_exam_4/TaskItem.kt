@@ -22,12 +22,15 @@ class TaskItem(
     @PrimaryKey(autoGenerate = true) var id: Int = 0)
 {
 
+    // Function to convert the completedDateString to LocalDate
     @RequiresApi(Build.VERSION_CODES.O)
     fun completedDate(): LocalDate? = if(completedDateString == null) null else LocalDate.parse(completedDateString, dateFormatter)
 
+    // Function to convert dueTimeString to LocalTime
     @RequiresApi(Build.VERSION_CODES.O)
     fun dueTime(): LocalTime? = if(dueTimeString == null) null else LocalTime.parse(dueTimeString, timeFormatter)
 
+    // Function to check if the task is completed
     @RequiresApi(Build.VERSION_CODES.O)
     fun isCompleted() = completedDate() != null
 

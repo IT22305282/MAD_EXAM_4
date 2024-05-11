@@ -29,6 +29,7 @@ class TaskViewModel(private val repository: TaskItemRepository): ViewModel() {
         repository.deleteTaskItem(taskItem)
     }
 
+    // Function to mark a TaskItem as completed
     @RequiresApi(Build.VERSION_CODES.O)
     fun setCompleted(taskItem: TaskItem) = viewModelScope.launch {
         if(!taskItem.isCompleted()){
@@ -37,6 +38,7 @@ class TaskViewModel(private val repository: TaskItemRepository): ViewModel() {
         repository.updateTaskItem(taskItem)
     }
 
+    // Function to mark a TaskItem as incomplete
     @RequiresApi(Build.VERSION_CODES.O)
     fun setIncomplete(taskItem: TaskItem) = viewModelScope.launch {
         if (taskItem.isCompleted()) {

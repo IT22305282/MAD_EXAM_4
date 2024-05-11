@@ -42,19 +42,24 @@ class NewTaskSheet(var taskItem: TaskItem?) : BottomSheetDialogFragment() {
             binding.taskTitle.text = "New Task"
         }
 
+        // Initialize ViewModel
         taskViewModel = ViewModelProvider(activity).get(TaskViewModel::class.java)
 
+        // Set click listener for save button
         binding.saveButton.setOnClickListener{
             saveAction()
         }
 
+        // Set click listener for time picker button
         binding.timePickerButton.setOnClickListener{
             openTimePicker()
         }
     }
 
+    // Function to open time picker dialog
     @RequiresApi(Build.VERSION_CODES.O)
     private fun openTimePicker() {
+        // Set current time if dueTime is null
         if(dueTime == null){
             dueTime = LocalTime.now()
         }
@@ -68,11 +73,13 @@ class NewTaskSheet(var taskItem: TaskItem?) : BottomSheetDialogFragment() {
         dialog.show()
     }
 
+    // Function to update time button text
     @RequiresApi(Build.VERSION_CODES.O)
     private fun updateTimeButtonText() {
         binding.timePickerButton.text = String.format("%02d:%02d", dueTime!!.hour, dueTime!!.minute)
     }
 
+    // Function to handle save action
     @RequiresApi(Build.VERSION_CODES.O)
     private fun saveAction() {
 
@@ -81,6 +88,7 @@ class NewTaskSheet(var taskItem: TaskItem?) : BottomSheetDialogFragment() {
 
         val dueTimeString = if(dueTime == null) null else TaskItem.timeFormatter.format(dueTime)
 
+        // If taskItem is null, create a new task, else update the existing task
         if(taskItem == null){
             val newtask = TaskItem(name, desc, dueTimeString,null)
             taskViewModel.addTaskItem(newtask)
@@ -91,12 +99,13 @@ class NewTaskSheet(var taskItem: TaskItem?) : BottomSheetDialogFragment() {
             taskViewModel.updateTaskItem(taskItem!!)
         }
 
-
+        // Clear input fields and dismiss the bottom sheet
         binding.name.setText("")
         binding.desc.setText("")
         dismiss()
     }
 
+    // Function to inflate the layout for the bottom sheet
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentNewTaskSheetBinding.inflate(inflater,container,false)
         return binding.root

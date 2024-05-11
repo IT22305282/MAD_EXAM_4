@@ -14,6 +14,7 @@ import com.example.mad_exam_4.databinding.ActivityMainBinding
 class MainActivity : AppCompatActivity(), TaskItemClickListener {
 
     private lateinit var binding: ActivityMainBinding
+    // Using viewModels delegate to initialize TaskViewModel
     private val taskViewModel: TaskViewModel by viewModels {
         TaskItemModelFactory((application as TodoApplication).repository)
     }
@@ -27,13 +28,16 @@ class MainActivity : AppCompatActivity(), TaskItemClickListener {
             NewTaskSheet(null).show(supportFragmentManager, "newTaskTag")
         }
 
+        // Set up RecyclerView to display tasks
         setRecyclerView()
 
     }
 
+    // Function to set up RecyclerView
     private fun setRecyclerView() {
         val mainActivity = this
 
+        // Observe changes in the list of tasks
         taskViewModel.taskItems.observe(this){
             binding.todoListRecyclerView.apply {
                 layoutManager = LinearLayoutManager(applicationContext)
@@ -42,25 +46,29 @@ class MainActivity : AppCompatActivity(), TaskItemClickListener {
         }
     }
 
+    // Function to handle editing a task item
     override fun editTaskItem(taskItem: TaskItem) {
         NewTaskSheet(taskItem).show(supportFragmentManager,"newTaskTag")
     }
 
+    // Function to handle marking a task item as complete
     @RequiresApi(Build.VERSION_CODES.O)
     override fun completeTaskItem(taskItem: TaskItem) {
         taskViewModel.setCompleted(taskItem)
     }
 
-    // Implementing incompleteTaskItem method to handle marking a task item as incomplete
+    // Function to handle marking a task item as incomplete
     @RequiresApi(Build.VERSION_CODES.O)
     override fun incompleteTaskItem(taskItem: TaskItem) {
         taskViewModel.setIncomplete(taskItem)
     }
 
+    // Function to handle deleting a task item
     override fun deleteTaskItem(taskItem: TaskItem) {
         showDeleteConfirmationDialog(taskItem)
     }
 
+    // Function to show a confirmation dialog before deleting a task item
     private fun showDeleteConfirmationDialog(taskItem: TaskItem) {
         val builder = AlertDialog.Builder(this)
         builder.setTitle("Delete Task")

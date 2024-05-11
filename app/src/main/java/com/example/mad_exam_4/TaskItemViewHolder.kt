@@ -18,6 +18,7 @@ class TaskItemViewHolder(
     @RequiresApi(Build.VERSION_CODES.O)
     private val timeFormat = DateTimeFormatter.ofPattern("HH:mm")
 
+    // Bind TaskItem data to ViewHolder
     @RequiresApi(Build.VERSION_CODES.O)
     fun bindTaskItem(taskItem: TaskItem){
 
@@ -32,7 +33,6 @@ class TaskItemViewHolder(
 
         // Set click listener for the complete button
         binding.completeButton.setOnClickListener {
-            // Toggle completion state of the task item
             if (taskItem.isCompleted()) {
                 // If completed, mark as incomplete
                 clickListener.incompleteTaskItem(taskItem)
@@ -44,31 +44,34 @@ class TaskItemViewHolder(
             }
         }
 
+        // Set click listener for editing the task
         binding.taskCellContainer.setOnClickListener {
             clickListener.editTaskItem(taskItem)
         }
 
+        // Set click listener for deleting the task
         binding.deleteButton.setOnClickListener {
             clickListener.deleteTaskItem(taskItem)
         }
 
+        // Set due time text if available
         if (taskItem.dueTime() != null)
             binding.dueTime.text = timeFormat.format(taskItem.dueTime())
         else
             binding.dueTime.text = ""
     }
 
+    // Function to set the UI state for a completed task
     private fun setCompletedState() {
         binding.name.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
         binding.dueTime.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
-        // Change the image for complete button when task is completed
         binding.completeButton.setImageResource(R.drawable.check_box_checked)
     }
 
+    // Function to set the UI state for an incomplete task
     private fun setIncompleteState() {
         binding.name.paintFlags = 0
         binding.dueTime.paintFlags = 0
-        // Change the image for complete button when task is incomplete
         binding.completeButton.setImageResource(R.drawable.check_box_outline)
     }
 }
