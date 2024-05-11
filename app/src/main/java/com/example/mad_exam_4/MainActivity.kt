@@ -48,4 +48,9 @@ class MainActivity : AppCompatActivity(), TaskItemClickListener {
     override fun completeTaskItem(taskItem: TaskItem) {
         taskViewModel.setCompleted(taskItem)
     }
+
+    // Implementing incompleteTaskItem method to handle marking a task item as incomplete
+    override fun incompleteTaskItem(taskItem: TaskItem) {
+        taskViewModel.setIncomplete(taskItem)
+    }
 }

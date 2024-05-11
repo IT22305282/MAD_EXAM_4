@@ -22,28 +22,49 @@ class TaskItemViewHolder(
     fun bindTaskItem(taskItem: TaskItem){
 
         binding.name.text = taskItem.name
-        binding.desc.text = taskItem.desc
 
-        if(taskItem.isCompleted()){
-            binding.name.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
-            binding.desc.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
-            binding.dueTime.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
+        // Check if the task item is completed
+        if (taskItem.isCompleted()) {
+            setCompletedState()
+        } else {
+            setIncompleteState()
         }
 
-        binding.completeButton.setImageResource(taskItem.imageResource())
-        binding.completeButton.setColorFilter(taskItem.imageColor(context))
-
-        binding.completeButton.setOnClickListener{
-            clickListener.completeTaskItem(taskItem)
+        // Set click listener for the complete button
+        binding.completeButton.setOnClickListener {
+            // Toggle completion state of the task item
+            if (taskItem.isCompleted()) {
+                // If completed, mark as incomplete
+                clickListener.incompleteTaskItem(taskItem)
+                setIncompleteState()
+            } else {
+                // If incomplete, mark as completed
+                clickListener.completeTaskItem(taskItem)
+                setCompletedState()
+            }
         }
 
-        binding.taskCellContainer.setOnClickListener{
+        binding.taskCellContainer.setOnClickListener {
             clickListener.editTaskItem(taskItem)
         }
 
-        if(taskItem.dueTime() != null)
+        if (taskItem.dueTime() != null)
             binding.dueTime.text = timeFormat.format(taskItem.dueTime())
         else
             binding.dueTime.text = ""
+    }
+
+    private fun setCompletedState() {
+        binding.name.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
+        binding.dueTime.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
+        // Change the image for complete button when task is completed
+        binding.completeButton.setImageResource(R.drawable.check_box_checked)
+    }
+
+    private fun setIncompleteState() {
+        binding.name.paintFlags = 0 // Remove the strike-through effect
+        binding.dueTime.paintFlags = 0 // Remove the strike-through effect
+        // Change the image for complete button when task is incomplete
+        binding.completeButton.setImageResource(R.drawable.check_box_outline)
     }
 }

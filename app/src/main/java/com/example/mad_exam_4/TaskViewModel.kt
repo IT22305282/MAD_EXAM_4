@@ -25,12 +25,26 @@ class TaskViewModel(private val repository: TaskItemRepository): ViewModel() {
         repository.updateTaskItem(taskItem)
     }
 
+    fun deleteTaskItem(taskItem: TaskItem) = viewModelScope.launch {
+        repository.deleteTaskItem(taskItem)
+    }
+
     @RequiresApi(Build.VERSION_CODES.O)
     fun setCompleted(taskItem: TaskItem) = viewModelScope.launch {
         if(!taskItem.isCompleted()){
             taskItem.completedDateString = TaskItem.dateFormatter.format(LocalDate.now())
         }
         repository.updateTaskItem(taskItem)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun setIncomplete(taskItem: TaskItem) = viewModelScope.launch {
+        if (taskItem.isCompleted()) {
+            // Reset completedDateString to null
+            taskItem.completedDateString = null
+            // Update task item in the database
+            repository.updateTaskItem(taskItem)
+        }
     }
 
 }

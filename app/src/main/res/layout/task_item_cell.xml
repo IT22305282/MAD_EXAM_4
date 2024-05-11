@@ -29,10 +29,12 @@
             android:id="@+id/name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/place_holder"
             android:layout_gravity="center"
+            android:layout_weight="1"
+            android:fontFamily="sans-serif"
+            android:text="@string/place_holder"
             android:textSize="18sp"
-            android:layout_weight="1"/>
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/dueTime"
@@ -40,17 +42,19 @@
             android:layout_height="wrap_content"
             android:text="@string/place_holder"
             android:layout_gravity="center"
-            android:layout_marginHorizontal="15dp"/>
+            android:layout_marginHorizontal="5dp"
+            android:fontFamily="sans-serif"/>
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="5dp"
+            android:scaleX="1.5"
+            android:scaleY="1.5"
+            android:src="@drawable/baseline_delete_outline"
+            android:backgroundTint="@android:color/transparent"/>
 
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/desc"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/place_holder"
-        android:layout_gravity="bottom"
-        android:layout_marginBottom="15dp"
-        android:layout_marginLeft="78dp"/>
 
 </androidx.cardview.widget.CardView>
