@@ -31,10 +31,10 @@ class NewTaskSheet(var taskItem: TaskItem?) : BottomSheetDialogFragment() {
             binding.taskTitle.text = "Edit Task"
             val editable = Editable.Factory.getInstance()
             binding.name.text = editable.newEditable(taskItem!!.name)
-            binding.name.text = editable.newEditable(taskItem!!.desc)
+            binding.desc.text = editable.newEditable(taskItem!!.desc)
 
-            if(taskItem!!.dueTime != null){
-                dueTime = taskItem!!.dueTime!!
+            if(taskItem!!.dueTime() != null){
+                dueTime = taskItem!!.dueTime()!!
                 updateTimeButtonText()
             }
 
@@ -73,15 +73,22 @@ class NewTaskSheet(var taskItem: TaskItem?) : BottomSheetDialogFragment() {
         binding.timePickerButton.text = String.format("%02d:%02d", dueTime!!.hour, dueTime!!.minute)
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun saveAction() {
+
         val name = binding.name.text.toString()
         val desc = binding.desc.text.toString()
 
+        val dueTimeString = if(dueTime == null) null else TaskItem.timeFormatter.format(dueTime)
+
         if(taskItem == null){
-            val newtask = TaskItem(name, desc, dueTime,null)
+            val newtask = TaskItem(name, desc, dueTimeString,null)
             taskViewModel.addTaskItem(newtask)
         }else{
-            taskViewModel.updateTaskItem(taskItem!!.id, name,desc, dueTime )
+            taskItem!!.name = name
+            taskItem!!.desc = desc
+            taskItem!!.dueTimeString = dueTimeString
+            taskViewModel.updateTaskItem(taskItem!!)
         }
 
 
@@ -91,7 +98,7 @@ class NewTaskSheet(var taskItem: TaskItem?) : BottomSheetDialogFragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = FragmentNewTaskSheetBinding.inflate(inflater, container,false)
+        binding = FragmentNewTaskSheetBinding.inflate(inflater,container,false)
         return binding.root
     }
 
